@@ -78,12 +78,12 @@ void MainWindow::on_pushButton_3_clicked()
     QSqlQuery *qry = new QSqlQuery(Databas);
     QString User = ui->lineEdit_Username_3->text();
     QString Pass = ui->lineEdit_2_Password_3->text() ;
-    if(User==NULL||Pass==NULL) {
+        if(QString(User).isNull()||QString(Pass).isNull()) {
 
         QMessageBox::information(this,"Result","Pls Fill The User and Password") ;
         return ;
-
     }
+
          qry->prepare(" select Employees.Name COLLATE latin1_general_cs LIKE 'a%' , Employees.Password COLLATE latin1_general_cs LIKE 'a%' from  Employees WHERE Name = :User  AND  Password = :Pass ");
          qry->bindValue(":User", User) ;
          qry->bindValue(":Pass",Pass) ;

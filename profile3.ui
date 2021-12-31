@@ -287,7 +287,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_2">
+        <widget class="QToolButton" name="toolButton">
          <property name="text">
           <string>Print</string>
          </property>
@@ -322,7 +322,7 @@
            <item>
             <widget class="QTabWidget" name="tabWidget_3">
              <property name="currentIndex">
-              <number>1</number>
+              <number>0</number>
              </property>
              <widget class="QWidget" name="tab_8">
               <attribute name="title">
@@ -500,7 +500,7 @@
            <item>
             <widget class="QTabWidget" name="tabWidget_4">
              <property name="currentIndex">
-              <number>1</number>
+              <number>0</number>
              </property>
              <widget class="QWidget" name="tab_6">
               <attribute name="title">
@@ -927,12 +927,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QPlainTextEdit" name="plainTextEdit_2">
-             <property name="plainText">
-              <string>Hi he has fever 
-and lot </string>
-             </property>
-            </widget>
+            <widget class="QPlainTextEdit" name="plainTextEdit"/>
            </item>
            <item>
             <spacer name="verticalSpacer_2">
@@ -948,6 +943,9 @@ and lot </string>
             </spacer>
            </item>
            <item>
+            <widget class="QTextEdit" name="textEdit"/>
+           </item>
+           <item>
             <layout class="QHBoxLayout" name="horizontalLayout_7">
              <item>
               <spacer name="horizontalSpacer_2">
@@ -961,20 +959,6 @@ and lot </string>
                 </size>
                </property>
               </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton">
-               <property name="text">
-                <string>Print</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_4">
-               <property name="text">
-                <string>Insert</string>
-               </property>
-              </widget>
              </item>
              <item>
               <widget class="QPushButton" name="pushButton_3">

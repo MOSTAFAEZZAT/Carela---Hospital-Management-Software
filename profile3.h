@@ -144,22 +144,11 @@ public:
 
     QString Namedb ;
     QString Phonedb ;
-
     bool ViewProfile3();
-
-
     bool RetrievingMedicineData();
     bool Retrieving_Analysis_Data();
     bool Retrieving_Kitchen_Data();
     bool Retrieving_X_Rays_Data();
-
-
-
-    bool Retrieving_Patient_MedicineData();
-    bool Retrieving_Patient_Analysis_Data();
-    bool Retrieving_Patient_Retrieving_Kitchen_Data();
-    bool Retrieving_Patient__Rays_Data();
-
     QStringList visitTree(QTreeWidget * tree);
     void visitTree(QStringList list,QTreeWidgetItem * tree);
 
@@ -168,7 +157,11 @@ public:
 private slots:
 
     void on_lineEdit_textChanged(const QString &arg1);
+    //       TreeWidget Double Clicked
 
+    //  void on_treeWidget_Medicine_itemDoubleClicked(QTreeWidgetItem *item, int column);
+  //  void on_treeWidget_Analysis_itemDoubleClicked(QTreeWidgetItem *item, int column);
+    //   void on_treeWidget_Kitchen_itemDoubleClicked(QTreeWidgetItem *item, int column);
     void  Kitchen_DoubleClicked(QTreeWidgetItem *item,Kitchen_Data &Kitchen);
     void  Analysis_DoubleClicked(QTreeWidgetItem *item,Analysis_Data &Analysis);
     void  Medicine_DoubleClicked(QTreeWidgetItem *item,pharmacy &Medicine);
@@ -199,15 +192,6 @@ private slots:
 
 
     void on_toolButton_clicked();
-
-    void on_pushButton_3_clicked();
-
-    void on_pushButton_clicked();
-
-
-    void on_pushButton_2_clicked();
-
-    void on_pushButton_4_clicked();
 
 private:
 

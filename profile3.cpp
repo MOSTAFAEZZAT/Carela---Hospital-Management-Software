@@ -1,6 +1,6 @@
 #include "profile3.h"
 #include "ui_profile3.h"
-
+#include<iostream>
 #include <QTreeWidgetItem>
 #include <QScreen>
 #include <QItemSelectionModel>
@@ -12,8 +12,7 @@
 #include <QtPrintSupport/QPrintDialog>
 #include <QtPrintSupport/QPrinter>
 #include <QTextEdit>
-#include <QPagedPaintDevice>
-
+using namespace std;
 Profile3::Profile3(QWidget *parent ) :
     QWidget(parent),
     ui(new Ui::Profile3)
@@ -29,13 +28,11 @@ Profile3::Profile3(QWidget *parent ) :
             [&,this](QTreeWidgetItem *item){Kitchen_DoubleClicked (item, Kitchen);});
     connect(Kitchen.CancelButton_TreeWidget_2, &QPushButton::clicked, [&,this]{Cancel_TreeWidget_Kitchen( Kitchen);});
 
-
     connect(ui->treeWidget_Medicine,
             &QTreeWidget::itemDoubleClicked,
             [&,this](QTreeWidgetItem *item){Medicine_DoubleClicked (item, Medicine);});
 
     connect(Medicine.CancelButton_TreeWidget_6, &QPushButton::clicked, [&,this]{Cancel_TreeWidget_Medicine( Medicine);});
-
 
     connect(ui->treeWidget_Analysis,
             &QTreeWidget::itemDoubleClicked,
@@ -43,7 +40,6 @@ Profile3::Profile3(QWidget *parent ) :
 
     connect(Analysis.CancelButton_treeWidget_Analysis, &QPushButton::clicked, [&,this]{Cancel_TreeWidget_Analysis( Analysis);});
 
-    ui->plainTextEdit_2->setReadOnly(true);
 
 }
 
@@ -85,7 +81,7 @@ bool Profile3::ViewProfile3(){
       TotalPriceAnalysis;
       Medicine;
       TotalPriceMedicine;
-    */
+*/
 
 
 
@@ -140,7 +136,7 @@ bool Profile3::ViewProfile3(){
     ui->label_PatientAddress->setText(PatientsAddress);
     ui->label_TimeEntry->setText(Date_Time);
     ui->label_PatietDatebirth->setText(Age);
-/*
+
 
    querry->prepare(" SELECT * FROM patients_medication where patients_medication.patient_id = :Phonedb  ") ;
    querry->bindValue(":Phonedb",Phonedb);
@@ -182,7 +178,7 @@ bool Profile3::ViewProfile3(){
        model->appendRow(rowData);
 
     }
-*/
+
 
 
 /*
@@ -208,8 +204,6 @@ bool Profile3::ViewProfile3(){
 
     }*/
 
-    Retrieving_Patient_MedicineData();
-    Retrieving_Patient_Analysis_Data();
     RetrievingMedicineData();
     Retrieving_Analysis_Data();
     Retrieving_Kitchen_Data();
@@ -232,148 +226,6 @@ bool Profile3::ViewProfile3(){
 
 };
 
-bool Profile3::Retrieving_Patient_MedicineData(){
-
-
-
-    QSqlDatabase   Databasee  =   QSqlDatabase::database();
-    Databasee =   QSqlDatabase::addDatabase("QMYSQL");
-    Databasee.setHostName("localhost") ;
-    Databasee.setUserName("root");
-    Databasee.setPassword("root");
-    Databasee.setDatabaseName("Clinic_Database");
-
-    if(Databasee.open()){
-        QMessageBox::about(0,"res","databaseopen") ;
-
-
-
-    }else {
-        QMessageBox::about(0,"res","database not open") ;
-        //qDebug() <<  Databasee.lastError();
-    }
-     QSqlQuery * querry = new QSqlQuery ( )  ;
-
-    querry->prepare(" SELECT * FROM patients_medication where patients_medication.patient_id = :Phonedb  ") ;
-    querry->bindValue(":Phonedb",Phonedb);
-
-      auto model = new QStandardItemModel();
-
-    if(querry->exec()){
-
-
-
-        //   QModelIndex * model1 = new   QModelIndex();
-        //  model->setStringList(list);
-        ui->tableView->setModel(model);
-        ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
-        model->setHorizontalHeaderItem(0, new QStandardItem("Medicine_id"));
-        model->setHorizontalHeaderItem(1, new QStandardItem("Medicine_Name"));
-        model->setHorizontalHeaderItem(2, new QStandardItem("Medicine_Price"));
-        model->setHorizontalHeaderItem(3, new QStandardItem("Medicine_Type"));
-        model->setHorizontalHeaderItem(4, new QStandardItem("Medicine_Time_Added"));
-
-    }else{
-
-      qDebug() << querry->lastError() << "Lasterror in medicine data  " ;
-
-    }
-
-
-    while(querry->next()){
-
-       QString Medicine_id= querry->value(1).toString();
-       QString Medicine_Name= querry->value(2).toString();
-       QString Medicine_Price= querry->value(3).toString();
-       QString Medicine_Type= querry->value(4).toString();
-       QString Medicine_Time_Added= querry->value(5).toString();
-        QList<QStandardItem*> rowData;
-        rowData << new QStandardItem(Medicine_id);
-        rowData << new QStandardItem(Medicine_Name);
-        rowData << new QStandardItem(Medicine_Price);
-        rowData << new QStandardItem(Medicine_Type);
-        rowData << new QStandardItem(Medicine_Time_Added);
-
-        model->appendRow(rowData);
-
-     }
-
-
-
-
-}
-
-
-bool Profile3::Retrieving_Patient_Analysis_Data(){
-
-
-
-    QSqlDatabase   Databasee  =   QSqlDatabase::database();
-    Databasee =   QSqlDatabase::addDatabase("QMYSQL");
-    Databasee.setHostName("localhost") ;
-    Databasee.setUserName("root");
-    Databasee.setPassword("root");
-    Databasee.setDatabaseName("Clinic_Database");
-
-    if(Databasee.open()){
-        QMessageBox::about(0,"res","databaseopen") ;
-
-
-
-    }else {
-        QMessageBox::about(0,"res","database not open") ;
-        //qDebug() <<  Databasee.lastError();
-    }
-     QSqlQuery * querry = new QSqlQuery ( )  ;
-
-    querry->prepare(" SELECT * FROM patients_analysis where patients_analysis.patient_id = :Phonedb  ") ;
-    querry->bindValue(":Phonedb",Phonedb);
-
-      auto model = new QStandardItemModel();
-
-    if(querry->exec()){
-
-
-
-        //   QModelIndex * model1 = new   QModelIndex();
-        //  model->setStringList(list);
-        ui->tableView_2->setModel(model);
-        ui->tableView_2->setEditTriggers(QAbstractItemView::NoEditTriggers);
-        model->setHorizontalHeaderItem(0, new QStandardItem("Analysis_id"));
-        model->setHorizontalHeaderItem(1, new QStandardItem("Analysis_Name"));
-        model->setHorizontalHeaderItem(2, new QStandardItem("Analysis_Price"));
-        model->setHorizontalHeaderItem(3, new QStandardItem("Analysis_Type"));
-        model->setHorizontalHeaderItem(4, new QStandardItem("Analysis_Time_Added"));
-
-    }else{
-
-      qDebug() << querry->lastError() << "Lasterror in medicine data  " ;
-
-    }
-
-
-    while(querry->next()){
-
-       QString Analysis_id= querry->value(1).toString();
-       QString Analysis_Name= querry->value(2).toString();
-       QString Analysis_Price= querry->value(3).toString();
-       QString Analysis_Type= querry->value(4).toString();
-       QString Analysis_Time_Added= querry->value(5).toString();
-        QList<QStandardItem*> rowData;
-        rowData << new QStandardItem(Analysis_id);
-        rowData << new QStandardItem(Analysis_Name);
-        rowData << new QStandardItem(Analysis_Price);
-        rowData << new QStandardItem(Analysis_Type);
-        rowData << new QStandardItem(Analysis_Time_Added);
-
-        model->appendRow(rowData);
-
-     }
-
-
-
-
-}
 // Cancel TreeWidget Section
 
 
@@ -991,7 +843,7 @@ void Profile3::on_pushButton_SavePatientMedicineItems_clicked(){
 
             All_Added_ItemOfMedicine += MedicineCode +"---" +NOW +",";
 
-            qDebug() << All_Added_ItemOfMedicine << " Total Items1 " << endl ;
+            qDebug() << All_Added_ItemOfMedicine << " Total Items1 " ;
 
 
         }
@@ -1245,101 +1097,6 @@ void Profile3::pushButton( Kitchen_Data  &Kitchen)
 
 void Profile3::on_pushButton_SavePatientKitchenItems_clicked()
 {
-    if(ui->treeWidget_ShowKitchen->topLevelItemCount()==0)
-    {
-        QMessageBox::warning(this,"Result","There are no Items to Save");
-        return ;
-    }
-    //    qDebug() << PatrientName_Delgate_MainProcess << PhoneNumber_Delgate_MainProcess  << "hey";
-
-    QSqlDatabase Databas  = QSqlDatabase::database();
-    Databas =   QSqlDatabase::addDatabase("QMYSQL", "SecConnection");
-    Databas.setHostName("localhost") ;
-    Databas.setUserName("root");
-    Databas.setPassword("root");
-    Databas.setDatabaseName("Clinic_Database");
-
-    if(Databas.open()){
-        qDebug() << "Database connected" ;
-    }
-    else{
-        qDebug() << "Database not connected" ;
-
-    }
-
-
-    QMessageBox::StandardButton reply;
-
-    reply = QMessageBox::question(this, "Result", "Are you sure? Note: After Clicking Changes will be Saved in Database?",
-                                  QMessageBox::Yes|QMessageBox::No);
-
-    //  QString Namedb ;
-    //  QString Phonedb ;
-    if (reply == QMessageBox::Yes) {
-
-        QSqlQuery * KitchenQuery = new QSqlQuery(Databas) ;
-        QTreeWidgetItem *item = new QTreeWidgetItem();
-        QStringList List ;
-
-
-        QList <QTreeWidgetItem*> itemList1_Kitchen;
-        itemList1_Kitchen = ui->treeWidget_ShowKitchen->selectedItems();
-
-        QString MealCode ;
-        QString MealName;
-        QString MealPrice;
-        QString MealType;
-
-
-
-
-        qDebug() << itemList1_Kitchen <<  " Total Iteems";
-
-
-        for(int i=0;i<ui->treeWidget_ShowKitchen->topLevelItemCount();i++){
-
-
-            item = ui->treeWidget_ShowKitchen->topLevelItem(i);
-
-            MealCode  = item->text(0);
-            MealName = item->text(1);
-            MealPrice = item->text(2);
-            MealType = item->text(3);
-
-
-
-        }
-
-            KitchenQuery->prepare("INSERT INTO `patients_kitchen`(`patient_id`, `meal_code`, `meal_name`, `meal_price`, `meal_type`, `meal_time_added`) "
-                                                       "    VALUES (:Phonedb,:MealCode,:MealName,:MealPrice,:MealType,NOW())") ;
-
-            KitchenQuery->bindValue(":Phonedb",Phonedb);
-            KitchenQuery->bindValue(":MealCode",MealCode);
-            KitchenQuery->bindValue(":MealName",MealName);
-            KitchenQuery->bindValue(":MealPrice",MealPrice);
-            KitchenQuery->bindValue(":MealType",MealType);
-
-
-
-            if(KitchenQuery->exec()){
-                QMessageBox::about(this,"Result","Analysis's Data Inserted Successfully");
-              }
-            else{
-                QMessageBox::about(this,"Error","Error in Inserting Data to Analysis");
-                qDebug() << KitchenQuery->lastError();
-
-                }
-
-
-
-
-   } else{
-        qDebug() << "Yes was *not* clicked";
-    }
-
-
-
-
 
 }
 
@@ -1388,12 +1145,7 @@ void Profile3::on_Save_PatientAnalysisItems_clicked(){
         itemList1_Analysis = ui->treeWidget_ShowAnalysis->selectedItems();
 
         QString AnalysisCode ;
-        QString AnalysisName;
         QString AnalysisPrice;
-        QString AnalysisType;
-
-          QString NOW ;
-
         QString AnalysisTimeAdded ;
         QString getAnalysis_DB ;
         int getAnalysisPrice_DB    ;
@@ -1410,30 +1162,23 @@ void Profile3::on_Save_PatientAnalysisItems_clicked(){
             item = ui->treeWidget_ShowAnalysis->topLevelItem(i);
 
             AnalysisCode  = item->text(0);
-            AnalysisName = item->text(1);
             AnalysisPrice = item->text(2);
-            AnalysisType = item->text(3);
-
             QDateTime now = QDateTime::currentDateTime();
-              NOW = now.toString() ;
+            QString NOW = now.toString() ;
+
+           AnalysisTimeAdded += AnalysisCode +"---" +NOW + "," ;
+            SaveDataAnalysis.Total_Analysis_Price += AnalysisPrice.toInt();
 
 
-
-
+            qDebug() <<  SaveDataAnalysis.All_Analysis_Added  << " Total Items1 " << AnalysisPrice ;
 
 
         }
 
-            AnalysisQuery->prepare("INSERT INTO `patients_analysis`(`patient_id`, `analysis_id`, `analysis_name`, `analysis_price`, `analysis_type`, `analysis_time_added`)"
-                                                       "    VALUES (:Phonedb,:AnalysisCode,:AnalysisName,:AnalysisPrice,:AnalysisType,NOW())") ;
-
+            AnalysisQuery->prepare("UPDATE patientsinfo SET Analysing=CONCAT(ifnull(Analysing, '')  , '', :AnalysisTimeAdded)  WHERE patientsinfo.PhoneNum=:Phonedb ") ;
+            AnalysisQuery->bindValue(":AnalysisTimeAdded",AnalysisTimeAdded);
+            AnalysisQuery->bindValue(":SaveDataAnalysis.Total_Analysis_Price",SaveDataAnalysis.Total_Analysis_Price);
             AnalysisQuery->bindValue(":Phonedb",Phonedb);
-            AnalysisQuery->bindValue(":AnalysisCode",AnalysisCode);
-            AnalysisQuery->bindValue(":AnalysisName",AnalysisName);
-            AnalysisQuery->bindValue(":AnalysisPrice",AnalysisPrice);
-            AnalysisQuery->bindValue(":AnalysisType",AnalysisType);
-
-
 
             if(AnalysisQuery->exec()){
                 QMessageBox::about(this,"Result","Analysis's Data Inserted Successfully");
@@ -1460,105 +1205,7 @@ void Profile3::on_toolButton_clicked()
     QPrinter printer;
     QTextEdit *editor = new QTextEdit();
 
-    QPrintDialog *dialog = new QPrintDialog(&printer, this);
-
-       dialog->setWindowTitle(tr("Print Document"));
-       if (editor->textCursor().hasSelection())
-           dialog->addEnabledOption(QAbstractPrintDialog::PrintSelection);
-       if (dialog->exec() != QDialog::Accepted)
-           return;
-}
-
-void Profile3::on_pushButton_3_clicked()
-{
-
-    if(  ui->plainTextEdit_2->isReadOnly()==true){
-
-        ui->plainTextEdit_2->setReadOnly(false);
 
 
-    }else{
+   }
 
-
-            ui->plainTextEdit_2->setReadOnly(true);
-    }
-}
-
-void Profile3::on_pushButton_clicked(){
-
-    QPrinter printer(QPrinter::HighResolution);
-    printer.setOutputFormat(QPrinter::PdfFormat);
-    printer.setOutputFileName("D:/outputt.pdf");
-    ui->plainTextEdit_2->print(&printer);
-
-}
-
-void Profile3::on_pushButton_2_clicked()
-{
-      QDialog w;
-
-    QPrinter printer(QPrinter::HighResolution);
-           printer.setOutputFormat(QPrinter::PdfFormat);
-           printer.setOutputFileName("D:/output.pdf");
-           printer.setPageMargins(12, 16, 12, 20, QPrinter::Millimeter);
-           printer.setFullPage(true);
-
-           QPainter painter(&printer);
-
-           double xscale = printer.pageRect().width() / double(w.width());
-           double yscale = printer.pageRect().height() / double(w.height());
-           double scale = qMin(xscale, yscale);
-           painter.translate(printer.paperRect().center());
-           painter.scale(scale, scale);
-           painter.translate(-w.width()/ 2, -w.height()/ 2);
-           w.render(&painter);
-}
-
-void Profile3::on_pushButton_4_clicked()
-{
-    QSqlDatabase Databas  = QSqlDatabase::database();
-    Databas =   QSqlDatabase::addDatabase("QMYSQL", "SecConnection");
-    Databas.setHostName("localhost") ;
-    Databas.setUserName("root");
-    Databas.setPassword("root");
-    Databas.setDatabaseName("Clinic_Database");
-
-    if(Databas.open()){
-        qDebug() << "Database connected" ;
-    }
-    else{
-        qDebug() << "Database not connected" ;
-
-    }
-
-    QMessageBox::StandardButton reply;
-
-    reply = QMessageBox::question(this, "Result", "Are you sure? Note: After Clicking Changes will be Saved in Database?",
-                                  QMessageBox::Yes|QMessageBox::No);
-
-    if(reply==QMessageBox::Yes){
-          QString text = ui->plainTextEdit_2->toPlainText();
-          QSqlQuery *Diagonsis =  new QSqlQuery(Databas);
-          Diagonsis->prepare(" UPDATE `patientsinfo` SET  DiagnosisDisease=CONCAT(ifnull(DiagnosisDisease, '')  , '', :text)   where  patientsinfo.PhoneNum = :Phonedb   ");
-          Diagonsis->bindValue(":Phonedb",Phonedb);
-              Diagonsis->bindValue(":text",text);
-          if(!Diagonsis->exec()) {
-
-               qDebug() <<Diagonsis->lastError() << text  ;
-
-          }else {
-                  qDebug() << text  ;
-
-          }
-
-
-
-    }else{
-
-        qDebug() << "Error " ;
-    }
-
-
-
-
-}
